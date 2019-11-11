@@ -179,15 +179,14 @@ cd buck-security
 cd ..
 }
 
-
 # Run The Trusty Ol' Buck Security
 if [ $buck == 1 ]; then
     {
-buckrun;
+	buckrun;
     }
 elif [ -d "./buck-security" ]; then
     {
-	echo "Buck Security Detected. Run?
+	echo "Buck Security Detected. Run?"
 	read -r -p "$* [y/n]: " runbuck
 	case $runbuck in
 	 [Yy]* ) buckrun ;;
