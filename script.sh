@@ -172,11 +172,26 @@ for home_dir in $dir_list; do
     printf "$format" "$total_dirs" "$total_files" "$total_blocks" | tee -a dirsize.txt
 done
 
+#simplification for.... Stuff.
+buckrun() {
+cd buck-security
+./buck-security --sysroot=/
+cd ..
+}
+
 # Run The Trusty Ol' Buck Security
 if [ $buck == 1 ]; then
     {
-        cd buck-security || exit
-        ./buck-security --sysroot=/
+	buckrun;
+    }
+elif [ -d "./buck-security" ]; then
+    {
+	echo "Buck Security Detected. Run?"
+	read -r -p "$* [y/n]: " runbuck
+	case $runbuck in
+	 [Yy]* ) buckrun ;;
+	 [Nn]* ) echo "Buck Security not running." ;;
+	esac
     }
 else
     echo "Buck security not downloaded, so not running."
