@@ -90,7 +90,7 @@ apt-get -y install libpam-cracklib
 sed -i '1 s/^/password requisite pam_cracklib.so retry=3 minlen=8 difok=3 reject_username minclass=3 maxrepeat=2 dcredit=1 ucredit=1 lcredit=1 ocredit=1\n/' /etc/pam.d/common-password
 
 # Cracking tools/malware.  You get the drift.
-apt-get -y remove --purge hydra* ophcrack* john* nikto* netcat* aircrack-ng* hashcat* nmap* ncrack* wireshark*
+apt-get -y remove hydra* ophcrack* john* nikto* netcat* aircrack-ng* hashcat* nmap* ncrack* wireshark*
 
 # Enables daily updates
 sed -i -e 's/APT::Periodic::Update-Package-Lists.*\+/APT::Periodic::Update-Package-Lists "1";/' /etc/apt/apt.conf.d/10periodic
