@@ -6,7 +6,7 @@ if [[ $EUID -ne 0 ]]; then
     exit 1
 else echo "Confirmed running as root."
 fi
-
+echo 'Acquire::Languages "none";' > /etc/apt/apt.conf.d/99disable-translations
 # Initialize some variables.
 export buck=0
 export bum=0
@@ -15,12 +15,18 @@ fstab=$(grep -c "tmpfs" /etc/fstab)
 # Update the package cache
 apt-get -y update
 
+if [ ! -f lynis.txt ]; then
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C80E383C3DE9F082E01391A0366C67DE91CA5D5F
+sudo apt install apt-transport-https
+echo "deb https://packages.cisofy.com/community/lynis/deb/ stable main" | sudo tee /etc/apt/sources.list.d/cisofy-lynis.list
+fi
+
 # Install Programs
-echo "Install the supplementary programs Graphical Firewall Management, Check Rootkit, rkhunter, and Boot-up Manager?"
+echo "Install the supplementary programs Lynis, Graphical Firewall Management, Check Rootkit, rkhunter, and Boot-up Manager?"
 echo -n "(if already installed press y)"
 read -r -p "$* [y/n]: " sup
 case $sup in
-    [Yy]* ) apt-get -y install gufw bum rkhunter chkrootkit && export bum=1 ;;
+    [Yy]* ) apt-get -y install gufw bum rkhunter chkrootkit lynis && export bum=1 ;;
     [Nn]* ) echo "Your choice is noted." && export bum=0 ;;
     * ) echo "Invalid input! Please answer y (yes) or n (no)."
 esac
@@ -53,7 +59,8 @@ case $smb in
 esac
 
 # Add PPA for Mozilla Firefox; <s>Add PPA for Libre Office</s>
-add-apt-repository ppa:ubuntu-mozilla-security/ppa # && add-apt-repository ppa:libreoffice/ppa
+# Unstable. Not recommended as it causes problems. Removing for now, fix is later in script.
+#add-apt-repository ppa:ubuntu-mozilla-security/ppa # && add-apt-repository ppa:libreoffice/ppa
 
 # Update local package cache
 apt-get update
