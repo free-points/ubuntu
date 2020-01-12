@@ -15,6 +15,7 @@ fstab=$(grep -c "tmpfs" /etc/fstab)
 # Update the package cache
 apt-get -y update
 
+# Check for and Install Lynis
 if [ ! -f lynis.txt ]; then
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C80E383C3DE9F082E01391A0366C67DE91CA5D5F
 sudo apt install apt-transport-https
@@ -326,6 +327,15 @@ fi
 # Prevent IP Spoofing
 echo "order bind,hosts" >> /etc/host.conf
 echo "nospoof on" >> /etc/host.conf
+
+# Run Lynis
+echo -n "Would you like to run Lynis?"
+read -r -p "$* [y/n]: " lyn
+case $lyn in
+    [Yy]* ) lynis audit system ;;
+    [Nn]* ) echo "Understood" ;;
+    * ) echo "Invalid input! Please answer y (yes) or n (no)."
+esac
 
 echo "Script completed. Please remember to look at the output of the script; and check buck-security results."
 echo "Also look at CHKROOTKIT's results, as that may shed some light on some *points* of interest."
