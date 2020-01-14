@@ -337,6 +337,10 @@ case $lyn in
     * ) echo "Invalid input! Please answer y (yes) or n (no)."
 esac
 
+if grep -i "NOPASSWD" /etc/sudoers /etc/sudoers.d/* | sed -e '/^#/d' -e '/^[ \t][ \t]*#/d' -e 's/#.*$//' -e '/^$/d' | grep -i "NOPASSWD";then
+  echo "NOPASSWD DETECTED IN SUDOers!"
+fi
+
 echo "Script completed. Please remember to look at the output of the script; and check buck-security results."
 echo "Also look at CHKROOTKIT's results, as that may shed some light on some *points* of interest."
 echo "Don't forget to sneak a look at \"dirsize.txt\" in this directory; it could help you find media files."
