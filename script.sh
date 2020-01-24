@@ -184,7 +184,7 @@ done
 #simplification for.... Stuff.
 buckrun() {
 cd buck-security
-./buck-security --sysroot=/
+./buck-security --sysroot=/ | tee -a buck-results.txt
 cd ..
 }
 
@@ -211,7 +211,7 @@ if [[ $bum == 1 ]]; then
     echo -n "Run CHKROOTKIT?"
     read -r -p "$* [y/n]: " yn
     case $yn in
-        [Yy]* ) chkrootkit | grep INFECTED ;;
+        [Yy]* ) chkrootkit | grep INFECTED | tee -a chrk-results.txt ;;
         [Nn]* ) echo "Ah, okay. Let's continue... almost done!" ;;
         * ) echo "Invalid input! Please answer y (yes) or n (no)."
     esac
@@ -332,7 +332,7 @@ echo "nospoof on" >> /etc/host.conf
 echo -n "Would you like to run Lynis?"
 read -r -p "$* [y/n]: " lyn
 case $lyn in
-    [Yy]* ) lynis audit system ;;
+    [Yy]* ) lynis audit system | tee -a lynis-results.txt ;;
     [Nn]* ) echo "Understood" ;;
     * ) echo "Invalid input! Please answer y (yes) or n (no)."
 esac
